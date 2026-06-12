@@ -1,0 +1,16 @@
+"Payment_Method","Order_Status","Total_Orders","Percentage_Within_Method(%)"
+"bKash","Completed",202,57.88
+"bKash","Pending",74,21.20
+"bKash","Cancelled",73,20.92
+"COD","Completed",300,61.48
+"COD","Cancelled",97,19.88
+"COD","Pending",91,18.65
+"Credit Card","Completed",39,60.00
+"Credit Card","Pending",15,23.08
+"Credit Card","Cancelled",11,16.92
+"Debit Card","Completed",35,55.56
+"Debit Card","Cancelled",18,28.57
+"Debit Card","Pending",10,15.87
+"Nagad","Completed",137,58.30
+"Nagad","Pending",51,21.70
+"Nagad","Cancelled",47,20.00

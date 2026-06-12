@@ -1,0 +1,42 @@
+"product_id","product_name","category","unit_price","Category_Average_Price","Price_Difference"
+33,"Sprite 1L","Beverages",70.00,137.00,-67.00
+31,"Water Bottle 1L","Beverages",20.00,137.00,-117.00
+9,"Bru Coffee 200g","Beverages",330.00,137.00,193.00
+10,"Taaza Black Tea 400g","Beverages",190.00,137.00,53.00
+32,"Pepsi 1L","Beverages",75.00,137.00,-62.00
+8,"Farm Fresh Milk 1L","Dairy",90.00,90.00,0.00
+20,"Banglalink Internet Pack","Digital",99.00,125.67,-26.67
+22,"GP Internet Pack","Digital",149.00,125.67,23.33
+21,"Robi Internet Pack","Digital",129.00,125.67,3.33
+41,"Earphones","Electronics",250.00,600.00,-350.00
+40,"Power Bank 10000mAh","Electronics",950.00,600.00,350.00
+38,"Wallet (Men)","Fashion",450.00,380.00,70.00
+37,"Cap","Fashion",120.00,380.00,-260.00
+39,"Ladies Bag","Fashion",600.00,380.00,220.00
+35,"T-shirt (Men)","Fashion",350.00,380.00,-30.00
+36,"T-shirt (Women)","Fashion",380.00,380.00,0.00
+26,"Lentil (Dal) 1kg","Grocery",120.00,164.30,-44.30
+2,"Nazirshail Rice 5kg","Grocery",520.00,164.30,355.70
+3,"Rupchanda Soyabean Oil 1L","Grocery",175.00,164.30,10.70
+4,"Fresh Sugar 1kg","Grocery",95.00,164.30,-69.30
+5,"ACI Pure Salt 1kg","Grocery",38.00,164.30,-126.30
+23,"Onion 1kg","Grocery",80.00,164.30,-84.30
+24,"Potato 1kg","Grocery",35.00,164.30,-129.30
+25,"Green Chili 100g","Grocery",20.00,164.30,-144.30
+1,"Miniket Rice 5kg","Grocery",450.00,164.30,285.70
+27,"Flour (Atta) 2kg","Grocery",110.00,164.30,-54.30
+11,"Horlicks 500g","Health",480.00,246.00,234.00
+12,"Oral Saline (ORS)","Health",12.00,246.00,-234.00
+13,"Vim Dishwashing Bar","Home Care",35.00,55.00,-20.00
+14,"Wheel Washing Powder 1kg","Home Care",95.00,55.00,40.00
+19,"Bashundhara Tissue","Home Care",35.00,55.00,-20.00
+6,"Broiler Chicken (whole)","Meat",230.00,230.00,0.00
+34,"Shoes Polish","Personal Care",130.00,111.60,18.40
+18,"Clear Men Shampoo 180ml","Personal Care",190.00,111.60,78.40
+17,"Sunsilk Shampoo 180ml","Personal Care",160.00,111.60,48.40
+16,"Lux Soap 100g","Personal Care",40.00,111.60,-71.60
+15,"Lifebuoy Soap 100g","Personal Care",38.00,111.60,-73.60
+7,"Deshi Egg (12 pcs)","Poultry",160.00,160.00,0.00
+30,"Peanut 500g","Snacks",120.00,60.00,60.00
+29,"Chanachur 200g","Snacks",40.00,60.00,-20.00
+28,"Biscuits (Mixed)","Snacks",20.00,60.00,-40.00

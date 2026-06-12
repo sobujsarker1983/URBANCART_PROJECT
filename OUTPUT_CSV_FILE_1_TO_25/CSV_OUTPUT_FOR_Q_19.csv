@@ -1,0 +1,51 @@
+"City","Payment_Method","Usage_Count","Preference_Rank"
+"Barishal","COD",76,1
+"Barishal","bKash",44,2
+"Barishal","Nagad",28,3
+"Barishal","Debit Card",15,4
+"Barishal","Credit Card",10,5
+"Chattogram","COD",56,1
+"Chattogram","bKash",44,2
+"Chattogram","Nagad",34,3
+"Chattogram","Credit Card",4,4
+"Chattogram","Debit Card",2,5
+"Cumilla","COD",49,1
+"Cumilla","bKash",32,2
+"Cumilla","Nagad",31,3
+"Cumilla","Credit Card",11,4
+"Cumilla","Debit Card",3,5
+"Dhaka","bKash",29,1
+"Dhaka","COD",27,2
+"Dhaka","Nagad",18,3
+"Dhaka","Credit Card",5,4
+"Dhaka","Debit Card",2,5
+"Gazipur","COD",38,1
+"Gazipur","bKash",38,2
+"Gazipur","Nagad",20,3
+"Gazipur","Debit Card",5,4
+"Gazipur","Credit Card",2,5
+"Khulna","COD",50,1
+"Khulna","bKash",35,2
+"Khulna","Nagad",23,3
+"Khulna","Debit Card",8,4
+"Khulna","Credit Card",5,5
+"Narayanganj","COD",25,1
+"Narayanganj","bKash",18,2
+"Narayanganj","Nagad",13,3
+"Narayanganj","Debit Card",3,4
+"Narayanganj","Credit Card",2,5
+"Rajshahi","COD",51,1
+"Rajshahi","bKash",36,2
+"Rajshahi","Nagad",15,3
+"Rajshahi","Debit Card",13,4
+"Rajshahi","Credit Card",11,5
+"Rangpur","COD",54,1
+"Rangpur","Nagad",29,2
+"Rangpur","bKash",26,3
+"Rangpur","Credit Card",7,4
+"Rangpur","Debit Card",5,5
+"Sylhet","COD",62,1
+"Sylhet","bKash",47,2
+"Sylhet","Nagad",24,3
+"Sylhet","Credit Card",8,4
+"Sylhet","Debit Card",7,5

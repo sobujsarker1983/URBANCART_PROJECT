@@ -1,0 +1,25 @@
+"Gender","Category","Total_Orders","Total_Quantity_Purchased","Total_Revenue","Avg_Basket_Size_Per_Order","Avg_Order_Value_AOV"
+"Female","Fashion",199,556,209600.00,2.79,1053.27
+"Female","Grocery",343,1188,183294.00,3.46,534.38
+"Female","Electronics",96,253,154950.00,2.64,1614.06
+"Female","Beverages",228,714,96570.00,3.13,423.55
+"Female","Personal Care",203,602,66326.00,2.97,326.73
+"Female","Health",101,273,62244.00,2.70,616.28
+"Female","Digital",111,298,37282.00,2.68,335.87
+"Female","Meat",51,113,25990.00,2.22,509.61
+"Female","Poultry",55,148,23680.00,2.69,430.55
+"Female","Snacks",151,391,23520.00,2.59,155.76
+"Female","Home Care",132,354,19230.00,2.68,145.68
+"Female","Dairy",40,98,8820.00,2.45,220.50
+"Male","Grocery",472,1654,295343.00,3.50,625.73
+"Male","Fashion",286,777,285620.00,2.72,998.67
+"Male","Electronics",129,336,214200.00,2.60,1660.47
+"Male","Beverages",288,774,115400.00,2.69,400.69
+"Male","Personal Care",281,821,90398.00,2.92,321.70
+"Male","Health",118,278,65580.00,2.36,555.76
+"Male","Digital",185,501,63239.00,2.71,341.83
+"Male","Meat",66,147,33810.00,2.23,512.27
+"Male","Snacks",171,455,29040.00,2.66,169.82
+"Male","Home Care",174,460,25940.00,2.64,149.08
+"Male","Poultry",58,147,23520.00,2.53,405.52
+"Male","Dairy",73,171,15390.00,2.34,210.82

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanCart Executive Portfolio Dashboard - Fully Interactive Style</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    :root {
+      --primary: #0F172A; /* Corporate Deep Blue for titles/charts */
+      --accent: #2563EB; /* Blue Accent */
+      --success: #16A34A;
+      --warning: #D97706;
+      --danger: #DC2626;
+      --bg-global: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --radius-lg: 10px;
+      --radius-md: 6px;
+      
+      /* New blended semi-transparent color for filter/KPI bar - Light Tya (semi-teal) + Light Olive tint */
+      --bg-filter-bar: rgba(241, 248, 238, 0.85); /* Semi-transparent blend of #EAFCF1 and #FAF1E8 tint */
+      --bg-kpi: #EAFCF1; /* Light Tya for KPI backgrounds */
+    }
+
+    [data-theme="dark"] {
+      --primary: #F8FAFC;
+      --accent: #3B82F6;
+      --success: #22C55E;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --bg-global: #0F172A;
+      --bg-card: #1E293B;
+      --border: #334155;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --bg-filter-bar: rgba(30, 46, 32, 0.85); /* Darker blended version */
+      --bg-kpi: #113821; /* Dark Tya for dark mode KPIs */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    body {
+      background-color: var(--bg-global);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden; /* Fix content to exactly one screen without scrolling */
+      display: flex;
+      flex-direction: column;
+      padding: 6px 10px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Condensed Top Header Bar */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      padding: 5px 12px;
+      border-radius: var(--radius-md);
+      margin-bottom: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    [data-theme="dark"] .header-bar {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      border: 1px solid var(--border);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-tags {
+      display: flex;
+      gap: 6px;
+    }
+
+    .brand-tags span {
+      background: rgba(255, 255, 255, 0.12);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      color: #CBD5E1;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+    }
+
+    .theme-toggle {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Horizontal Gray Tab Navigation as in image_0.png */
+    .nav {
+      display: flex;
+      gap: 2px;
+      background: var(--border);
+      border-radius: var(--radius-md);
+      padding: 2px;
+      margin-bottom: 6px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 5px 10px;
+      border: none;
+      background: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .nav-btn.active {
+      background: var(--bg-card);
+      color: var(--accent);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    /* Viewport-filling Main Layout Grid Split */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 3.5fr 1fr;
+      gap: 6px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .pg { 
+      display: none; 
+      height: 100%;
+      flex-direction: column;
+    }
+    .pg.on { 
+      display: flex; 
+    }
+
+    /* CRITICAL: Combined Filter & KPI Bar with Special Blended Background Color */
+    .combined-card {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 10px;
+      background-color: var(--bg-filter-bar); /* Light Tya + Light Olive tint */
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 6px;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    
+    [data-theme="dark"] .combined-card {
+      background-color: rgba(30, 46, 32, 0.95);
+      border-color: rgba(226, 232, 240, 0.1);
+    }
+
+    /* Filter Section within Combined Card */
+    .combined-filters {
+      display: flex;
+      justify-content: flex-start;
+      gap: 12px;
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .filter-select {
+      background: var(--bg-global);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* KPI Summary Boxes integrated into Combined Card */
+    .combined-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .k {
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: var(--radius-md);
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    [data-theme="dark"] .k {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .k-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .k-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .k-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .k-val {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    /* Charts Section */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      flex: 1;
+      min-height: 0;
+    }
+    .charts-grid.full { grid-template-columns: 1fr; }
+    .charts-grid.w6040 { grid-template-columns: 1.6fr 1fr; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .card-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .card-ttl {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .card-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .chart-container {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+
+    /* Executive Business Insights Panel with LARGE FONTS */
+    .sql-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sql-panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+    }
+
+    .sql-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sql-item {
+      font-size: 14px; /* LARGE FONTS for insights */
+      font-weight: 500;
+      line-height: 1.5;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .sql-item::before {
+      content: "\ec5c";
+      font-family: "tabler-icons";
+      position: absolute;
+      left: 0;
+      top: 1px;
+      color: var(--success);
+    }
+    
+    .sql-item.risk::before {
+      color: var(--danger);
+      content: "\ea1f";
+    }
+
+    /* Tables Style */
+    .tbl {
+      width: 100%;
+      font-size: 11px;
+      border-collapse: collapse;
+    }
+
+    .tbl th {
+      text-align: left;
+      padding: 4px 6px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 9px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tbl td {
+      padding: 4px 6px;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tbl tr:hover td { background: var(--bg-global); }
+
+    .bdg {
+      font-size: 9px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    .bdg-r { background: rgba(220,38,38,0.1); color: var(--danger); }
+    .bdg-a { background: rgba(217,119,6,0.1); color: var(--warning); }
+    .bdg-g { background: rgba(22,163,74,0.1); color: var(--success); }
+    .bdg-b { background: rgba(37,99,235,0.1); color: var(--accent); }
+
+    .prog-bg { height: 4px; background: var(--border); border-radius: 2px; margin-top: 3px; width: 60px; }
+    .prog-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+
+    .lgd { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+    .lgd-i { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-muted); }
+    .lgd-sq { width: 8px; height: 8px; border-radius: 2px; }
+
+    /* Compact Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 4px;
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .footer-tags {
+      display: flex;
+      gap: 8px;
+    }
+
+    .footer-tags span {
+      background: var(--border);
+      color: var(--text-main);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+<div class="container">
+  
+  <!-- Condensed Header Bar -->
+  <div class="header-bar">
+    <div class="brand-section">
+      <h1 class="brand-title"><i class="ti ti-device-analytics"></i> UrbanCart E-Commerce Analytics</h1>
+      <div class="brand-tags">
+        <span>Revenue Analysis</span>
+        <span>Customer Insights</span>
+        <span>Inventory Monitoring</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div><i class="ti ti-calendar"></i> Period: Sep – Dec 2025</div>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="ti ti-moon" id="theme-icon"></i> <span id="theme-text">Dark</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Horizontal Tab Navigation as in image_0.png -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="sw('overview',this)"><i class="ti ti-layout-dashboard"></i> Overview</button>
+    <button class="nav-btn" onclick="sw('revenue',this)"><i class="ti ti-chart-bar"></i> Revenue & Products</button>
+    <button class="nav-btn" onclick="sw('customers',this)"><i class="ti ti-users"></i> Customers</button>
+    <button class="nav-btn" onclick="sw('payments',this)"><i class="ti ti-credit-card"></i> Payments</button>
+  </div>
+
+  <!-- Viewport-filling Main Layout Grid Split -->
+  <div class="main-layout">
+    
+    <!-- LEFT COLUMN: Dynamic Tabs, Charts, and COMBINED Filter/KPI Bar -->
+    <div class="left-column">
+      
+      <!-- CRITICAL: COMBINED Filter & KPI Bar, implemented here and replicated on other tabs -->
+      <div class="combined-card">
+        <!-- Integrated Filter Section (Image 1 Left) -->
+        <div class="combined-filters">
+          <div class="filter-item">
+            <span class="filter-label">Category:</span>
+            <select class="filter-select">
+              <option>All Categories</option>
+              <option>Fashion</option><option>Grocery</option><option>Electronics</option><option>Beverages</option><option>Personal Care</option><option>Health</option><option>Digital</option><option>Meat</option><option>Snacks</option><option>Poultry</option><option>Home Care</option><option>Dairy</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <span class="filter-label">City:</span>
+            <select class="filter-select">
+              <option>All Cities</option>
+              <option>Dhaka</option><option>Chattogram</option><option>Barishal</option><option>Sylhet</option><option>Rajshahi</option><option>Cumilla</option><option>Khulna</option><option>Rangpur</option><option>Gazipur</option><option>Narayanganj</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <span class="filter-label">Payment:</span>
+            <select class="filter-select">
+              <option>All Methods</option>
+              <option>COD</option><option>bKash</option><option>Nagad</option><option>Credit Card</option><option>Debit Card</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <span class="filter-label">Month:</span>
+            <select class="filter-select"><option>Sep-Dec 2025</option><option>Sep 2025</option><option>Oct 2025</option><option>Nov 2025</option><option>Dec 2025*</option></select>
+          </div>
+        </div>
+        
+        <!-- Integrated KPI Section (Image 1 Right) -->
+        <div class="combined-kpis">
+          <div class="k">
+            <div class="k-icon" style="background: rgba(37,99,235,0.1); color: var(--accent);"><i class="ti ti-cash"></i></div>
+            <div class="k-info"><div class="k-lbl">Gross Revenue</div><div class="k-val">৳21.69L</div></div>
+          </div>
+          <div class="k">
+            <div class="k-icon" style="background: rgba(22,163,74,0.1); color: var(--success);"><i class="ti ti-shopping-bag"></i></div>
+            <div class="k-info"><div class="k-lbl">Total Orders</div><div class="k-val">1,200</div></div>
+          </div>
+          <div class="k">
+            <div class="k-icon" style="background: rgba(217,119,6,0.1); color: var(--warning);"><i class="ti ti-users"></i></div>
+            <div class="k-info"><div class="k-lbl">Unique Buyers</div><div class="k-val">100</div></div>
+          </div>
+          <div class="k">
+            <div class="k-icon" style="background: #0C447C1A; color: #0C447C;"><i class="ti ti-receipt"></i></div>
+            <div class="k-info"><div class="k-lbl">Avg Rev/User</div><div class="k-val">৳21,690</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVERVIEW TAB CONTENT -->
+      <div class="pg on" id="pg-overview">
+        <div class="charts-grid">
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Monthly order volume</span><span class="card-sub">Sep – Dec 2025</span></div>
+            <div class="chart-container"><canvas id="c-monthly"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Order status breakdown</span><span class="card-sub">All orders</span></div>
+            <div class="lgd" id="lgd-status"></div>
+            <div class="chart-container"><canvas id="c-status"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Revenue by city</span><span class="card-sub">Ranked by total revenue</span></div>
+            <div class="chart-container"><canvas id="c-city-rev"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Revenue by category</span><span class="card-sub">Top categories</span></div>
+            <div class="lgd" id="lgd-cat"></div>
+            <div class="chart-container"><canvas id="c-cat-donut"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVENUE & PRODUCTS TAB CONTENT -->
+      <div class="pg" id="pg-revenue">
+        <div class="charts-grid w6040">
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Top 10 Selling Products</span></div>
+            <div class="chart-container"><canvas id="c-products"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Category shares</span></div>
+            <div class="tbl-wrap" style="flex:1;min-height:0;overflow-y:auto">
+              <table class="tbl">
+                <thead><tr><th>Category</th><th style="text-align:right">Revenue</th><th style="text-align:right">Share</th></tr></thead>
+                <tbody id="tb-cat"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUSTOMERS TAB CONTENT -->
+      <div class="pg" id="pg-customers">
+        <div class="charts-grid">
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Cancellation rate by city</span></div>
+            <div class="chart-container"><canvas id="c-cancel"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Top Spenders Leaderboard</span></div>
+            <div class="tbl-wrap" style="flex:1;min-height:0;overflow-y:auto">
+              <table class="tbl">
+                <thead><tr><th>Name</th><th style="text-align:right">Total Spend</th></tr></thead>
+                <tbody id="tb-cust"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Revenue by gender</span></div>
+            <div class="chart-container"><canvas id="c-gender"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENTS TAB CONTENT -->
+      <div class="pg" id="pg-payments">
+        <div class="charts-grid full">
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Payment Method Shares</span></div>
+            <div class="lgd" id="lgd-pay"></div>
+            <div class="chart-container"><canvas id="c-pay-donut"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">AOV vs Basket Size</span></div>
+            <div class="chart-container"><canvas id="c-pay-aov"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-ttl">Order Status by Payment</span></div>
+            <div class="chart-container"><canvas id="c-pay-status"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT FIXED ACTIONABLE PANEL (New Insights Box as per Image 1 Right) -->
+    <div class="right-column">
+      <div class="sql-panel">
+        <div class="sql-panel-title"><i class="ti ti-database"></i> Exec Business Insights</div>
+        <ul class="sql-list">
+          <li class="sql-item">Fashion holds 22.8% of total gross revenue.</li>
+          <li class="sql-item">Power Bank generated max sales (৳3,01,150).</li>
+          <li class="sql-item text-danger risk">Gazipur has peak cancellation rate (27.18%).</li>
+          <li class="sql-item">COD remains top method at 40.7% volume.</li>
+          <li class="sql-item risk" style="color:var(--warning)">2 products near zero stock alert.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Section -->
+  <div class="footer">
+    <div>Created by <strong>Sobuj Sarker</strong></div>
+    <div class="footer-tags">
+      <span>SQL</span>
+      <span>PostgreSQL</span>
+      <span>Power BI</span>
+      <span>GitHub Portfolio Project</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  function sw(id, btn) {
+    document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('pg-' + id).classList.add('on');
+    btn.classList.add('active');
+  }
+
+  function toggleTheme() {
+    const body = document.body;
+    const isDark = body.getAttribute('data-theme') === 'dark';
+    body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('theme-icon').className = isDark ? 'ti ti-moon' : 'ti ti-sun';
+    document.getElementById('theme-text').innerText = isDark ? 'Dark' : 'Light';
+  }
+
+  const tc = 'rgba(100, 116, 139, 0.7)';
+  const gc = 'rgba(100, 116, 139, 0.1)';
+  const base = (yFmt) => ({
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: tc, font: { size: 10 } }, grid: { color: gc } },
+      y: { ticks: { color: tc, font: { size: 10 }, callback: yFmt || (v=>v) }, grid: { color: gc } }
+    }
+  });
+
+  const moneyFmt = v => v >= 1000 ? '৳' + (v/1000).toFixed(0) + 'k' : '৳' + v;
+  const pctFmt = v => v + '%';
+
+  function makeLegend(id, labels, colors) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = labels.map((l,i) => `<span class="lgd-i"><span class="lgd-sq" style="background:${colors[i]}"></span>${l}</span>`).join('');
+  }
+
+  // Preserve all chart implementations exactly as from the provided base code
+  new Chart(document.getElementById('c-monthly'), {
+    type: 'bar',
+    data: {
+      labels: ['Sep','Oct','Nov','Dec*'],
+      datasets: [{ label: 'Orders', data: [243,413,371,173], backgroundColor: ['#3B82F6','#2563EB','#1D4ED8','#93C5FD'], borderRadius: 3 }]
+    },
+    options: { ...base(), plugins: { legend: { display: false } } }
+  });
+
+  const statusColors = ['#16A34A','#D97706','#DC2626'];
+  makeLegend('lgd-status', ['Comp 59%','Pend 26%','Canc 19%'], statusColors);
+  new Chart(document.getElementById('c-status'), {
+    type: 'doughnut',
+    data: { labels: ['Completed','Pending','Cancelled'], datasets: [{ data: [713,315,228], backgroundColor: statusColors, borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '65%' }
+  });
+
+  new Chart(document.getElementById('c-city-rev'), {
+    type: 'bar', indexAxis: 'y',
+    data: {
+      labels: ['Barishal','Sylhet','Chattogram','Rajshahi','Cumilla','Khulna','Rangpur','Gazipur','Dhaka','Narayanganj'],
+      datasets: [{ data: [305652,259522,248024,246125,242412,220602,216496,190007,123938,116208], backgroundColor: '#2563EB', borderRadius: 2 }]
+    },
+    options: { ...base(moneyFmt), indexAxis: 'y', scales: { x: { ticks: { color: tc, font:{size:10}, callback: moneyFmt }, grid: { color: gc } }, y: { ticks: { color: tc, font:{size:10} }, grid: { color: gc } } } }
+  });
+
+  const catLabels = ['Fashion','Grocery','Electronics','Beverages','Personal Care','Health'];
+  const catRevs = [495220,478637,369150,211970,156724,127824];
+  const catColors = ['#2563EB','#16A34A','#3B82F6','#D97706','#94A3B8','#0F172A'];
+  makeLegend('lgd-cat', catLabels.map((l,i)=> l + ' ' + (catRevs[i]/2169000*100).toFixed(0) + '%'), catColors);
+  new Chart(document.getElementById('c-cat-donut'), {
+    type: 'doughnut',
+    data: { labels: catLabels, datasets: [{ data: catRevs, backgroundColor: catColors, borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
+  });
+
+  new Chart(document.getElementById('c-products'), {
+    type: 'bar', indexAxis: 'y',
+    data: {
+      labels: ['Power Bank','Nazir Rice','Ladies Bag','Miniket Rice','Horlicks','Wallet','Coffee','T-shirt W','T-shirt M','Earphones'],
+      datasets: [{ data: [301150,162760,138600,126000,124320,123300,111540,100320,99400,68000], backgroundColor: '#2563EB', borderRadius: 2 }]
+    },
+    options: { ...base(), indexAxis: 'y', scales: { x: { ticks: { color: tc, font:{size:10}, callback: moneyFmt }, grid: { color: gc } }, y: { ticks: { color: tc, font: { size: 9 } }, grid: { color: gc } } } }
+  });
+
+  document.getElementById('tb-cat').innerHTML = catLabels.map((l,i) => `<tr><td>${l}</td><td style="text-align:right">৳${catRevs[i].toLocaleString()}</td><td style="text-align:right"><span class="bdg bdg-b">${(catRevs[i]/2169000*100).toFixed(1)}%</span></td></tr>`).join('');
+
+  new Chart(document.getElementById('c-cancel'), {
+    type: 'bar',
+    data: {
+      labels: ['Gazipur','Rangpur','Barishal','Rajshahi','Dhaka','Khulna','Sylhet','Narayanganj','Chattogram','Cumilla'],
+      datasets: [{
+        data: [27.18,24.79,24.28,23.02,20.99,19.83,17.57,16.39,15.71,14.29],
+        backgroundColor: ctx => ctx.raw > 22 ? '#DC2626' : ctx.raw > 18 ? '#D97706' : '#16A34A',
+        borderRadius: 2
+    }]
+  },
+  options: base(pctFmt)
+});
+
+const custData = [['Raisa',41151],['Mim',37025],['Tanvir',29420],['Sabina',28790],['Rakib',27580],['Samia',26340],['Ayon',25190],['Taushif',24800],['Saiful',24320],['Nusrat',23950]];
+const maxSpend = custData[0][1];
+document.getElementById('tb-cust').innerHTML = custData.map((r,i) => `<tr>
+  <td style="color:var(--text-muted);width:24px">${i+1}</td>
+  <td>${r[0]}</td>
+  <td style="text-align:right">
+    <div style="font-size:12px">৳${r[1].toLocaleString()}</div>
+    <div class="prog-bg"><div class="prog-fill" style="width:${Math.round(r[1]/maxSpend*100)}%;"></div></div>
+  </td>
+</tr>`).join('');
+
+new Chart(document.getElementById('c-gender'), {
+  type: 'bar',
+  data: {
+    labels: ['Fashion','Grocery','Electronics','Beverages','Personal'],
+    datasets: [{ label: 'Male', data: [285,295,214,115,90], backgroundColor: '#1D4ED8', borderRadius: 2 }, { label: 'Female', data: [209,183,154,96,66], backgroundColor: '#2563EB', borderRadius: 2 }]
+  },
+  options: base()
+});
+
+const payLabels = ['COD','bKash','Nagad','Card L1','Card L2'];
+const payColors = ['#0F172A','#2563EB','#16A34A','#D97706','#64748B'];
+const payCounts = [488,349,235,65,63];
+makeLegend('lgd-pay', payLabels.map((l,i)=> l + ' ' + (payCounts[i]/1200*100).toFixed(0)+'%'), payColors);
+new Chart(document.getElementById('c-pay-donut'), {
+  type: 'doughnut',
+  data: { labels: payLabels, datasets: [{ data: payCounts, backgroundColor: payColors, borderWidth: 0 }] },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
+});
+
+new Chart(document.getElementById('c-pay-aov'), {
+  type: 'bar',
+  data: {
+    labels: payLabels,
+    datasets: [
+      { label: 'AOV (৳)', data: [1730,1804,1876,1752,1720], backgroundColor: '#2563EB', borderRadius: 2, yAxisID: 'y' },
+      { label: 'Basket size', data: [8.9,9.3,9.8,8.7,10.3], backgroundColor: '#94A3B8', borderRadius: 2, yAxisID: 'y2' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: tc }, grid: { color: gc } },
+      y: { position: 'left', ticks: { color: tc, callback: v => '৳' + v }, grid: { color: gc } },
+      y2: { position: 'right', ticks: { color: tc, callback: v => v + ' items' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('c-pay-status'), {
+  type: 'bar',
+  data: {
+    labels: payLabels,
+    datasets: [{ label: 'Completed', data: [300,202,137,39,35], backgroundColor: '#639922', borderRadius: 2 }, { label: 'Pending', data: [91,74,51,15,10], backgroundColor: '#EF9F27', borderRadius: 2 }, { label: 'Cancelled', data: [97,73,47,11,18], backgroundColor: '#DC2626', borderRadius: 2 }]
+  },
+  options: base()
+});
+</script>
+</body>
+</html>
